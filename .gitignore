@@ -3,6 +3,8 @@ __pycache__/
 *.pyc
 .venv/
 .ipynb_checkpoints/
+.pytest_cache/
+.jupyter_runtime/
 
 # Artifacts (keep representative samples)
 artifacts/*
