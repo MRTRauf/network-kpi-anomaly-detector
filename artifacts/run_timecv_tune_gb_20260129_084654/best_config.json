@@ -1,0 +1,19 @@
+{
+  "n_estimators": 100.0,
+  "learning_rate": 0.1,
+  "max_depth": 2.0,
+  "min_samples_leaf": 5.0,
+  "subsample": 0.85,
+  "precision_mean": 0.7868376068376068,
+  "precision_std": 0.17615100542213208,
+  "recall_mean": 0.9355555555555555,
+  "recall_std": 0.05277485372016853,
+  "f1_mean": 0.8446538568643831,
+  "f1_std": 0.1318722589581537,
+  "f2_mean": 0.8928123538480875,
+  "f2_std": 0.08711194017094012,
+  "pr_auc_mean": 0.9545626102292768,
+  "pr_auc_std": 0.03728679023223437,
+  "alert_rate_mean": 0.088,
+  "alert_rate_std": 0.02039607805437114
+}

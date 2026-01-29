@@ -1,0 +1,158 @@
+{
+  "data_path": "data/network_dataset_labeled.csv",
+  "feature_cols": [
+    "bandwidth",
+    "throughput",
+    "congestion",
+    "packet_loss",
+    "latency",
+    "jitter",
+    "Percentage video occupancy",
+    "Bitrate video",
+    "Number videos",
+    "bandwidth__lag1",
+    "bandwidth__lag2",
+    "bandwidth__lag3",
+    "bandwidth__delta1",
+    "bandwidth__roll3_mean",
+    "bandwidth__roll3_std",
+    "bandwidth__roll6_mean",
+    "bandwidth__roll6_std",
+    "throughput__lag1",
+    "throughput__lag2",
+    "throughput__lag3",
+    "throughput__delta1",
+    "throughput__roll3_mean",
+    "throughput__roll3_std",
+    "throughput__roll6_mean",
+    "throughput__roll6_std",
+    "congestion__lag1",
+    "congestion__lag2",
+    "congestion__lag3",
+    "congestion__delta1",
+    "congestion__roll3_mean",
+    "congestion__roll3_std",
+    "congestion__roll6_mean",
+    "congestion__roll6_std",
+    "packet_loss__lag1",
+    "packet_loss__lag2",
+    "packet_loss__lag3",
+    "packet_loss__delta1",
+    "packet_loss__roll3_mean",
+    "packet_loss__roll3_std",
+    "packet_loss__roll6_mean",
+    "packet_loss__roll6_std",
+    "latency__lag1",
+    "latency__lag2",
+    "latency__lag3",
+    "latency__delta1",
+    "latency__roll3_mean",
+    "latency__roll3_std",
+    "latency__roll6_mean",
+    "latency__roll6_std",
+    "jitter__lag1",
+    "jitter__lag2",
+    "jitter__lag3",
+    "jitter__delta1",
+    "jitter__roll3_mean",
+    "jitter__roll3_std",
+    "jitter__roll6_mean",
+    "jitter__roll6_std"
+  ],
+  "kpi_cols": [
+    "bandwidth",
+    "throughput",
+    "congestion",
+    "packet_loss",
+    "latency",
+    "jitter"
+  ],
+  "leakage_cols_removed": [
+    "anomaly_throughput",
+    "anomaly_congestion",
+    "anomaly_packet_loss",
+    "anomaly_latency",
+    "anomaly_jitter"
+  ],
+  "target_like_removed": [
+    "Network target",
+    "Video target"
+  ],
+  "best_model": "GradientBoosting_fallback",
+  "threshold": 0.012482177672164458,
+  "metrics_test": {
+    "precision": 0.5909090909090909,
+    "recall": 1.0,
+    "f1": 0.7428571428571429,
+    "f2": 0.8783783783783784,
+    "pr_auc": 0.9329025225786358
+  },
+  "operating_point_recall_0_70": {
+    "threshold": 0.012482177672164458,
+    "precision": 0.5,
+    "recall": 1.0,
+    "f2": 0.8333333333333334
+  },
+  "sanity": {
+    "pr_auc_shuffled_labels": 0.15945849022772102,
+    "pr_auc_shuffled_rows": 0.10963969828081327
+  },
+  "all_models": [
+    {
+      "model": "LogisticRegression",
+      "status": "ok",
+      "threshold": 0.9995154180818168,
+      "val_f2": 0.5555555555555556,
+      "test_precision": 0.0,
+      "test_recall": 0.0,
+      "test_f1": 0.0,
+      "test_f2": 0.0,
+      "test_pr_auc": 0.6875145884255195,
+      "op_recall70": {
+        "threshold": 0.0994717186138451,
+        "precision": 0.10526315789473684,
+        "recall": 1.0,
+        "f2": 0.37037037037037035
+      }
+    },
+    {
+      "model": "RandomForest",
+      "status": "ok",
+      "threshold": 0.0725,
+      "val_f2": 0.7142857142857143,
+      "test_precision": 0.21666666666666667,
+      "test_recall": 1.0,
+      "test_f1": 0.3561643835616438,
+      "test_f2": 0.5803571428571429,
+      "test_pr_auc": 0.5190438897452472,
+      "op_recall70": {
+        "threshold": 0.0725,
+        "precision": 0.3333333333333333,
+        "recall": 1.0,
+        "f2": 0.7142857142857143
+      }
+    },
+    {
+      "model": "HistGradientBoosting",
+      "status": "failed",
+      "error": "[WinError 5] Access is denied"
+    },
+    {
+      "model": "GradientBoosting_fallback",
+      "status": "ok",
+      "threshold": 0.012482177672164458,
+      "val_f2": 0.8333333333333334,
+      "test_precision": 0.5909090909090909,
+      "test_recall": 1.0,
+      "test_f1": 0.7428571428571429,
+      "test_f2": 0.8783783783783784,
+      "test_pr_auc": 0.9329025225786358,
+      "op_recall70": {
+        "threshold": 0.012482177672164458,
+        "precision": 0.5,
+        "recall": 1.0,
+        "f2": 0.8333333333333334
+      }
+    }
+  ]
+}

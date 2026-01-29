@@ -9,11 +9,20 @@ __pycache__/
 # Artifacts (keep representative samples)
 artifacts/*
 !artifacts/.gitkeep
+!artifacts/run_optimize_20260128_170435/
 !artifacts/run_optimize_20260128_170435/**
+!artifacts/run_timecv5_20260129_082604/
 !artifacts/run_timecv5_20260129_082604/**
+!artifacts/run_timecv_models_20260129_083819/
 !artifacts/run_timecv_models_20260129_083819/**
+!artifacts/run_timecv_tune_gb_20260129_084654/
 !artifacts/run_timecv_tune_gb_20260129_084654/**
+!artifacts/run_timecv_tune_gb_20260129_090231/
 !artifacts/run_timecv_tune_gb_20260129_090231/**
+!artifacts/run_train_20260129_095747/
+!artifacts/run_train_20260129_095747/**
+!artifacts/run_eval_20260129_095800/
+!artifacts/run_eval_20260129_095800/**
 
 # Large outputs
 *.parquet
@@ -24,3 +33,14 @@ artifacts/*
 # OS junk
 Thumbs.db
 .DS_Store
+
+# Allow required artifact files inside whitelisted runs
+!artifacts/run_train_20260129_095747/scored_unlabeled.csv
+!artifacts/run_train_20260129_095747/incidents_unlabeled.csv
+!artifacts/run_eval_20260129_095800/scored_labeled.parquet
+!artifacts/run_eval_20260129_095800/incidents_labeled.parquet
+!artifacts/run_eval_20260129_095800/eval_metrics.csv
+!artifacts/run_timecv5_20260129_082604/metrics_per_fold.csv
+!artifacts/run_timecv_models_20260129_083819/metrics_per_fold.csv
+!artifacts/run_timecv_tune_gb_20260129_084654/metrics_candidates.csv
+!artifacts/run_timecv_tune_gb_20260129_090231/metrics_candidates.csv

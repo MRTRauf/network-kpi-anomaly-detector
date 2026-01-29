@@ -4,6 +4,7 @@ import pandas as pd
 import plotly.express as px
 
 from src.run_utils import latest_run_dir
+from src.data import load_csv
 
 ART_DIR = "artifacts"
 
@@ -26,6 +27,26 @@ def load_table(path_parquet: str, path_csv: str) -> pd.DataFrame:
         return pd.read_parquet(path_parquet)
     return pd.read_csv(path_csv)
 
+def load_demo_data() -> pd.DataFrame:
+    """
+    Fallback for Streamlit Cloud when no scored artifacts are present.
+    Uses labeled data if available to avoid re-implementing model scoring.
+    """
+    labeled_path = "data/network_dataset_labeled.csv"
+    unlabeled_path = "data/network_dataset.csv"
+    if os.path.exists(labeled_path):
+        df = load_csv(labeled_path)
+        if "anomaly" in df.columns:
+            df["anomaly_score"] = df["anomaly"].astype(float)
+            df["is_alert"] = df["anomaly"].astype(bool)
+            df["model_used"] = "label"
+        return df
+    df = load_csv(unlabeled_path)
+    df["anomaly_score"] = 0.0
+    df["is_alert"] = False
+    df["model_used"] = "demo"
+    return df
+
 def to_utc(ts) -> pd.Timestamp:
     """
     Convert slider datetime (could be tz-naive or tz-aware) into UTC tz-aware Timestamp.
@@ -36,30 +57,39 @@ def to_utc(ts) -> pd.Timestamp:
     return t.tz_convert("UTC")
 
 mode = st.radio("Select data source", ["unlabeled (train data)", "labeled (eval data)"], horizontal=True)
+demo_mode = False
+scored_path = None
+inc_path = None
+
 if mode.startswith("unlabeled"):
     run_dir = latest_run_dir("train")
     if run_dir is None:
-        st.error("No training run found. Run `python -m src.train` first.")
-        st.stop()
-    scored_path = os.path.join(run_dir, "scored_unlabeled.parquet")
-    inc_path = os.path.join(run_dir, "incidents_unlabeled.parquet")
+        st.warning("No training run found. Using demo data from data/.")
+        demo_mode = True
+    else:
+        scored_path = os.path.join(run_dir, "scored_unlabeled.parquet")
+        inc_path = os.path.join(run_dir, "incidents_unlabeled.parquet")
 else:
     run_dir = latest_run_dir("eval")
     if run_dir is None:
-        st.error("No evaluation run found. Run `python -m src.evaluate` first.")
-        st.stop()
-    scored_path = os.path.join(run_dir, "scored_labeled.parquet")
-    inc_path = os.path.join(run_dir, "incidents_labeled.parquet")
+        st.warning("No evaluation run found. Using demo data from data/.")
+        demo_mode = True
+    else:
+        scored_path = os.path.join(run_dir, "scored_labeled.parquet")
+        inc_path = os.path.join(run_dir, "incidents_labeled.parquet")
 
-csv_path = scored_path.replace(".parquet", ".csv")
+csv_path = scored_path.replace(".parquet", ".csv") if scored_path else None
 
-if (not os.path.exists(scored_path)) and (not os.path.exists(csv_path)):
-    st.error(f"File not found: {scored_path}. Run `python -m src.train` first.")
-    st.stop()
+if (not demo_mode) and scored_path and csv_path and (not os.path.exists(scored_path)) and (not os.path.exists(csv_path)):
+    st.warning(f"Scored file not found: {scored_path}. Using demo data from data/.")
+    demo_mode = True
 
-df = load_table(scored_path, csv_path)
-df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce", utc=True)
-df = df.dropna(subset=["timestamp"]).sort_values("timestamp").reset_index(drop=True)
+if demo_mode:
+    df = load_demo_data()
+else:
+    df = load_table(scored_path, csv_path)
+    df["timestamp"] = pd.to_datetime(df["timestamp"], errors="coerce", utc=True)
+    df = df.dropna(subset=["timestamp"]).sort_values("timestamp").reset_index(drop=True)
 
 with st.sidebar:
     st.header("Controls")
@@ -101,7 +131,7 @@ with colB:
     st.subheader("Alert Summary")
     st.metric("Alert rate", f"{(df['is_alert'].mean()*100):.2f}%")
 
-    if os.path.exists(inc_path) or os.path.exists(inc_path.replace(".parquet", ".csv")):
+    if (not demo_mode) and inc_path and (os.path.exists(inc_path) or os.path.exists(inc_path.replace(".parquet", ".csv"))):
         inc_csv = inc_path.replace(".parquet", ".csv")
         inc = load_table(inc_path, inc_csv)
         st.metric("Incident count", int(len(inc)))
