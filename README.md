@@ -7,6 +7,9 @@ Highlights
 - Thresholds tuned for recall/F2 to reduce false negatives.
 - Dashboard and API for triage and scoring.
 
+Live demo
+- https://network-kpi-anomaly-detector.streamlit.app/
+
 Quickstart (3 commands)
 ```bash
 pip install -r requirements.txt
@@ -49,7 +52,6 @@ Notebooks
 - `notebooks/Model_Comparison.ipynb`: Model benchmark, tuning table, and operating points.
 
 Dashboard
-- Live app: `https://network-kpi-anomaly-detector.streamlit.app/`
 - Default view uses the latest tuned GB run in `artifacts/run_timecv_tune_gb_*` and its operating points.
 - If tuning artifacts are missing, it falls back to `run_timecv_models_*`, then `run_train_*` / `run_eval_*`.
 - To pre-populate the dashboard with scores: run `python -m src.timecv_tune_gb`.
