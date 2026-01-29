@@ -372,6 +372,29 @@ def main() -> None:
 
     (run_dir / "operating_points.json").write_text(json.dumps(op_points, indent=2), encoding="utf-8")
 
+    scored_rows = pd.DataFrame(
+        {
+            "index": np.concatenate([r["index"].values for r in test_rows]),
+            "anomaly_score": test_scores_all,
+            "y_true": test_labels_all,
+        }
+    )
+    scored_rows = scored_rows.groupby("index", as_index=False).agg(
+        {"anomaly_score": "max", "y_true": "max"}
+    )
+    scored_rows["pred_label"] = scored_rows["anomaly_score"] >= thr_f2
+    scored_rows["is_alert"] = scored_rows["pred_label"]
+
+    merge_cols = []
+    if "timestamp" in df_feat.columns:
+        merge_cols.append("timestamp")
+    merge_cols.extend([c for c in kpi_cols if c in df_feat.columns])
+    if merge_cols:
+        scored_rows = scored_rows.merge(
+            df_feat[merge_cols], left_on="index", right_index=True, how="left"
+        )
+    scored_rows.to_csv(run_dir / "scored_labeled.csv", index=False)
+
     if importances:
         imp_arr = np.vstack(importances)
         imp_mean = imp_arr.mean(axis=0)
