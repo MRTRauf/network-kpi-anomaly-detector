@@ -48,6 +48,11 @@ Notebooks
 - `notebooks/EDA.ipynb`: Data overview, anomaly behavior, and drift checks.
 - `notebooks/Model_Comparison.ipynb`: Model benchmark, tuning table, and operating points.
 
+Dashboard
+- Default view uses the latest tuned GB run in `artifacts/run_timecv_tune_gb_*` and its operating points.
+- If tuning artifacts are missing, it falls back to `run_timecv_models_*`, then `run_train_*` / `run_eval_*`.
+- To pre-populate the dashboard with scores: run `python -m src.timecv_tune_gb`.
+
 Reproduce tuning
 ```bash
 python -m src.timecv_tune_gb
