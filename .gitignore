@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+.ipynb_checkpoints/
+
+# Artifacts (keep representative samples)
+artifacts/*
+!artifacts/.gitkeep
+!artifacts/run_optimize_20260128_170435/**
+!artifacts/run_timecv5_20260129_082604/**
+!artifacts/run_timecv_models_20260129_083819/**
+!artifacts/run_timecv_tune_gb_20260129_084654/**
+!artifacts/run_timecv_tune_gb_20260129_090231/**
+
+# Large outputs
+*.parquet
+*scored*.csv
+*incidents*.csv
+*metrics*.csv
+
+# OS junk
+Thumbs.db
+.DS_Store
